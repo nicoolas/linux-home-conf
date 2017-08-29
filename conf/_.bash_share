@@ -1,0 +1,30 @@
+#!/bin/bash -x
+
+## [ -n "$bashrc_share_sourced" ] && return
+## export bashrc_share_sourced=yes
+
+#
+# source ~/.bash_aliases
+# source ~/.bash_share
+#
+
+export EDITOR=vim
+
+no_color="\[\033[0m\]"
+
+if [ $(whoami) = root ]; then
+	ps1_color="\[\033[1;31m\]"
+else
+	ps1_color="\[\033[1;34m\]"
+fi
+export PS1="$ps1_color[$no_color\u$ps1_color]$no_color "
+
+if [ -e /.is_chroot ]; then
+	export PS1="$ps1_color(chroot)$no_color "
+fi
+export PS1=$PS1"\${PWD}$ps1_color :$no_color "
+
+PS2='>> '
+
+[ -r  ~/.bash_local ] && source ~/.bash_local
+
