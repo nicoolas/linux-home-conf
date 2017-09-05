@@ -4,6 +4,31 @@ alias grep='grep --color=auto'
 
 alias dpkg_disk_usage="dpkg-query -Wf '\${Installed-Size}\t\${Package}\t\${Priority}\n\' | egrep '\s(optional|extra)' | cut -f 1,2 | sort -nr"
 
+# startup of the ssh-agent
+function f_start_ssh_agent() {
+  local prefix="SSh-Agent: "
+
+  if which pgrep >/dev/null 2>&1
+  then
+    AGENT_PID=$(pgrep -x ssh-agent)
+    if [ $? -ne 0 ]
+    then
+      echo "$prefix: Starting SSH Agent"
+
+      eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
+      setx SSH_AUTH_SOCK $SSH_AUTH_SOCK
+      setx SSH_AGENT_PID $SSH_AGENT_PID
+
+      echo "$prefix: SSH Agent running (PID: $SSH_AGENT_PID)"
+    else
+      echo "$prefix: SSH Agent already running (PID: $AGENT_PID)"
+    fi
+  else
+	# Cygwin: package procps
+    echo "$prefix: SSH Agent: Missing 'pgrep'"
+  fi
+}
+
 # TMUX
 alias tmux-ls='tmux list-sessions'
 alias tmux-copy=" tee /tmp/screen-exchange"
