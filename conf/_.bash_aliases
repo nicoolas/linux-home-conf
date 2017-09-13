@@ -53,6 +53,18 @@ function browse()
         explorer.exe /e /root,$(pwd | sed 's_^/cygdrive/__;s_/_:\\_;s_/_\\_g')
         return 0
     fi
+
+    if which explorer.exe 2>/dev/null | grep -q '^/mnt/c/Windows/explorer.exe'
+    then
+		if pwd | grep -q '/mnt/[a-z]'
+		then
+	        explorer.exe $(pwd | sed 's_^/mnt/\([a-z]\)[/]_\1:\\_;s_/_\\_g')
+	        return 0
+		else
+			echo "Invalid pwd"
+			return 1
+		fi
+    fi
     echo "No browser found"
     return 1
 }
