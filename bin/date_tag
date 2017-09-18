@@ -1,2 +1,27 @@
 #!/bin/sh
-date +%Y%m%d_%H%M
+
+format="+%Y%m%d_%H%M"
+
+_usage() {
+	echo "<Help here>"
+	exit $1
+}
+
+show_cmd=
+
+while getopts "sch" opt; do
+	case $opt in
+	s)	format="$format%S" ;;
+	c)	show_cmd=true ;;
+	h)	_usage 0 ;;
+	\?) _usage 1 ;;
+  esac
+done
+
+if [ "$show_cmd" = "true" ]
+then
+	echo "date $format"
+else
+	date $format
+fi
+
