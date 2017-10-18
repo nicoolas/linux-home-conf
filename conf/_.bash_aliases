@@ -71,14 +71,15 @@ function browse()
 
 function tgo()
 {
-	local DEFAULT_TMUX_SESSION_NAME=0
+	local TMUX_SESSION_NAME=0
+	[ -n "$1" ] && TMUX_SESSION_NAME="$1"
 	tmux start-server
 	if [ -z "$TMUX" ]; then
 		# new-session -A not supported on tmux versions < 1.9
-		#tmux new-session -A -s $DEFAULT_TMUX_SESSION_NAME
-		if  tmux has-session -t $DEFAULT_TMUX_SESSION_NAME 2>/dev/null
-		then tmux attach-session -t $DEFAULT_TMUX_SESSION_NAME
-		else tmux new-session -s $DEFAULT_TMUX_SESSION_NAME
+		#tmux new-session -A -s $TMUX_SESSION_NAME
+		if  tmux has-session -t $TMUX_SESSION_NAME 2>/dev/null
+		then tmux attach-session -t $TMUX_SESSION_NAME
+		else tmux new-session -s $TMUX_SESSION_NAME
 		fi
 	else
 		echo "Running in a Tmux session ($TMUX)"
