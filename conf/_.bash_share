@@ -11,7 +11,8 @@ else
 fi
 export PS1="$ps1_color[$no_color\u$ps1_color]$no_color "
 
-if [ -e /.is_chroot ]; then
+if ! ls -id / | grep -q "^2 /"
+then
 	export PS1="$ps1_color(chroot)$no_color "
 fi
 export PS1=$PS1"\${PWD}$ps1_color :$no_color "
