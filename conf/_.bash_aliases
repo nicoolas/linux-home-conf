@@ -1,5 +1,5 @@
 
-alias slogs='sudo tail -n 40 -f /var/log/syslog'
+alias slogs='sudo tail -n 40 -F /var/log/syslog'
 alias grep='grep --color=auto'
 
 alias dpkg_disk_usage="dpkg-query -Wf '\${Installed-Size}\t\${Package}\t\${Priority}\n\' | egrep '\s(optional|extra)' | cut -f 1,2 | sort -nr"
