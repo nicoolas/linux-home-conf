@@ -2,10 +2,8 @@
 
 export EDITOR=vim
 
-if cat /proc/$$/cmdline | grep -q '^zsh$'
+if ! cat /proc/$$/cmdline | grep -q '^zsh$'
 then # do not mess with prompt in zsh for now
-
-else
 no_color="\[\033[0m\]"
 
 if [ $(whoami) = root ]; then
