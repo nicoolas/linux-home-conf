@@ -2,24 +2,27 @@
 
 export EDITOR=vim
 
-if ! cat /proc/$$/cmdline | grep -q '^zsh$'
-then # do not mess with prompt in zsh for now
-no_color="\[\033[0m\]"
-
-if [ $(whoami) = root ]; then
-	ps1_color="\[\033[1;31m\]"
-else
-	ps1_color="\[\033[1;34m\]"
-fi
-export PS1="$ps1_color[$no_color\u$ps1_color]$no_color "
-
-if ! ls -id / | grep -q "^2 /"
+if grep -zq '^zsh$' /proc/$$/cmdline
 then
-	export PS1="$ps1_color(chroot)$no_color "
-fi
-export PS1=$PS1"\${PWD}$ps1_color :$no_color "
+	export PS1="%m%# "
+	export PS2="%_> "
+else
+	no_color="\[\033[0m\]"
 
-PS2='>> '
+	if [ $(whoami) = root ]; then
+		ps1_color="\[\033[1;31m\]"
+	else
+		ps1_color="\[\033[1;34m\]"
+	fi
+	export PS1="$ps1_color[$no_color\u$ps1_color]$no_color "
+	
+	if ! ls -id / | grep -q "^2 /"
+	then
+		export PS1="$ps1_color(chroot)$no_color "
+	fi
+	export PS1=$PS1"\${PWD}$ps1_color :$no_color "
+	
+	PS2='>> '
 fi
 
 [ -r  ~/.sh_aliases ] && source ~/.sh_aliases

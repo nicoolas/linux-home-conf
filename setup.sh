@@ -44,14 +44,13 @@ done
 
 for old_shrc in "$HOME/.bash_aliases" "$HOME/.bash_share"
 do
-	if [ -L $old_shrc ]
-	then
-		echo "Remove old link: $old_shrc"
-		rm  $old_shrc
-	fi
+	[ -L $old_shrc ] && rm  -v $old_shrc
 done
 
-
+# clean old naming
+[ -e $HOME/.bash_local ]  && mv -v $HOME/.bash_local $HOME/.sh_local
+sed -i '/~\/.bash_aliases/d' $HOME/.bashrc
+sed -i '/~\/.bash_share/d' $HOME/.bashrc
 
 _log
 
