@@ -27,17 +27,31 @@ do
 done
 
 _log
-bash_share="$HOME/.bash_share"
-bash_rc="$HOME/.bashrc"
-if grep -q "^[^#].*source $bash_share" $bash_rc
-then
-	_log "DO NOT duplicate '$bash_share' sourcing in '$bash_rc'"
-else
-	_log "Appending sources to bashrc file"
-	cat >> $bash_rc <<-EOS
-	[ -f $bash_share ] && source $bash_share
-	EOS
-fi
+sh_share="$HOME/.sh_share"
+for shrc in "$HOME/.bashrc" "$HOME/.zshrc"
+do
+	if grep -q "^[^#].*source $sh_share" $shrc
+	then
+		_log "DO NOT duplicate '$sh_share' sourcing in '$shrc'"
+	else
+		_log "Appending sources to file '$shrc'"
+		cat >> $shrc <<-EOS
+		[ -f $sh_share ] && source $sh_share
+		EOS
+	fi
+done
+
+
+for old_shrc in "$HOME/.bash_aliases" "$HOME/.bash_share"
+do
+	if [ -L $old_shrc ]
+	then
+		echo "Remove old link: $old_shrc"
+		rm  $old_shrc
+	fi
+done
+
+
 
 _log
 

@@ -2,6 +2,10 @@
 
 export EDITOR=vim
 
+if cat /proc/$$/cmdline | grep -q '^zsh$'
+then # do not mess with prompt in zsh for now
+
+else
 no_color="\[\033[0m\]"
 
 if [ $(whoami) = root ]; then
@@ -18,6 +22,7 @@ fi
 export PS1=$PS1"\${PWD}$ps1_color :$no_color "
 
 PS2='>> '
+fi
 
 [ -r  ~/.bash_aliases ] && source ~/.bash_aliases
 [ -r  ~/.bash_local ] && source ~/.bash_local
