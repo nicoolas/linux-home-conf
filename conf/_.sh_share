@@ -2,7 +2,7 @@
 
 export EDITOR=vim
 
-if grep -zq '^zsh$' /proc/$$/cmdline
+if grep -zq '^[-]*zsh$' /proc/$$/cmdline
 then
 	export PS1="%m%# "
 	export PS2="%_> "
