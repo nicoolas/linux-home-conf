@@ -123,6 +123,14 @@ function tgo()
 	tmux new-session -A -s $_session
 }
 
+function tgos(){
+	local target_window=0
+	local target_pane=$target_window:0
+	tmux new-session -A -s $target_window -d
+	tmux select-pane -t $target_pane
+	tmux choose-tree -t $target_pane -s
+}
+
 # some more ls aliases
 alias ls='ls --color=auto'
 alias ll='ls -hl'
