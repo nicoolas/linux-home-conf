@@ -5,6 +5,8 @@ export EDITOR=vim
 if grep -zq '^[-]*zsh$' /proc/$$/cmdline
 then
 	echo >/dev/null
+	setopt nosharehistory # Do not import history from other shells dynamically
+
 	#export PS1="%m%# "
 	#export PS1="[%n@%m] %0~ %# "
 	#export PS1='%(!.%F{red}.%F{cyan})%n%f@%F{yellow}%12>.>%m%>>%(!.%F{red}.%F{cyan}) %0~%f %# '
