@@ -91,6 +91,10 @@ function tgo-old()
 # sessions exist   +    session arg -> start arg session
 # sessions exist   + no session arg -> start first existing session
 # 
+function f_tmux-recent-session() {
+	tmux list-sessions -F "#{session_last_attached}_#{session_name}" | sort | tail -n 1 | sed 's/^[0-9]*_//'
+}
+
 function tgo()
 {
 	if [ -n "$TMUX" ]
@@ -109,26 +113,33 @@ function tgo()
 	if [ -n "$1" ]
 	then
 		_session="$1"
-	else
-		if tmux list-sessions
-		then
-			echo
-			echo "Existing sessions, choosing first"
-			_session=$(tmux list-sessions -F '#{session_name}' | head -n 1)
-		else
-			echo "No session found, choosing default"
-		fi
+	elif tmux list-sessions
+	then
+		_session=$(f_tmux-recent-session)
 	fi
+	echo
 	echo "Target session: '$_session'"
 	tmux new-session -A -s $_session
 }
 
 function tgos(){
+	set -x
+	local target_session=$(f_tmux-recent-session)
+	[ -z "$target_session" ] && target_session="0"
+	tmux choose-tree -t $target_session -s
+	tmux attach-session -t $target_session
+}
+
+function tgos0(){
+	set -x
+	local target_session=0
 	local target_window=0
-	local target_pane=$target_window:0
-	tmux new-session -A -s $target_window -d
-	tmux select-pane -t $target_pane
-	tmux choose-tree -t $target_pane -s
+	local target_pane=0
+	tmux new-session -D -s $target_session
+	tmux select-window -t $target_session:$target_window
+	tmux select-pane -t $target_session:$target_window.$target_pane
+	tmux choose-tree -t $target_session:$target_window.$target_pane -s
+	tmux attach-session -t $target_session
 }
 
 # some more ls aliases
