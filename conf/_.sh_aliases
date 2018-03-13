@@ -103,7 +103,7 @@ function tgo()
 		return 0
 	fi
 
-	if tmux -V | grep -q "tmux 1.9"
+	if [ $(echo "$(tmux -V | cut -c 6-) > 1.9" | bc) -ne 1 ]
 	then
 		echo "Old tmux version (tmux -V), use 'tgo-old'"
 		return 0
