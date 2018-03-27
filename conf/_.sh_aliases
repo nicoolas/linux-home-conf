@@ -1,8 +1,16 @@
+#!/bin/sh
 
-alias slogs='sudo tail -n 40 -F /var/log/syslog'
 alias grep='grep --color=auto'
 
-alias dpkg_disk_usage="dpkg-query -Wf '\${Installed-Size}\t\${Package}\t\${Priority}\n\' | egrep '\s(optional|extra)' | cut -f 1,2 | sort -nr"
+alias dpkg_disk_usage="dpkg-query -Wf '\${Installed-Size}\t\${Package}\t\${Priority}\n\' | egrep '\s(optional|extra)' | cut -f 1,2 | sort -n"
+
+function slogs() {
+	local logs=/var/log/syslog
+	local SUDO=""
+	[ -n "$1" ] && logs="$1"
+	[ -r "$logs" ] || SUDO=sudo
+	$SUDO tail -n 40 -F "$logs"
+}
 
 # startup of the ssh-agent
 function f_start_ssh_agent() {
@@ -105,7 +113,7 @@ function tgo()
 
 	if [ $(echo "$(tmux -V | cut -c 6-) > 1.9" | bc) -ne 1 ]
 	then
-		echo "Old tmux version (tmux -V), use 'tgo-old'"
+		echo "Old tmux version ($(tmux -V)), use 'tgo-old'"
 		return 0
 	fi
 
