@@ -6,6 +6,7 @@ if grep -zq '^[-]*zsh$' /proc/$$/cmdline
 then
 	echo >/dev/null
 	setopt nosharehistory # Do not import history from other shells dynamically
+	setopt interactivecomments
 
 	if [ -z "$ZSH" ]
 	then
