@@ -1,6 +1,7 @@
 #!/bin/sh
 
 alias grep='grep --color=auto'
+alias rlk="readlink -f "
 
 alias dpkg_disk_usage="dpkg-query -Wf '\${Installed-Size}\t\${Package}\t\${Priority}\n\' | egrep '\s(optional|extra)' | cut -f 1,2 | sort -n"
 
