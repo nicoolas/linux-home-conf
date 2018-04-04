@@ -8,8 +8,8 @@ alias dpkg_disk_usage="dpkg-query -Wf '\${Installed-Size}\t\${Package}\t\${Prior
 function slogs() {
 	local logs=/var/log/syslog
 	local SUDO=""
-	[ -n "$1" ] && logs="$1"
-	[ -r "$logs" ] || SUDO=sudo
+	if [ -n "$1" ]; then logs="$1"; fi
+	if [ ! -r "$logs" ] ; then SUDO=sudo; fi
 	$SUDO tail -n 40 -F "$logs"
 }
 
@@ -132,7 +132,6 @@ function tgo()
 }
 
 function tgos(){
-	set -x
 	local target_session=$(f_tmux-recent-session)
 	[ -z "$target_session" ] && target_session="0"
 	tmux choose-tree -t $target_session -s
@@ -140,7 +139,6 @@ function tgos(){
 }
 
 function tgos0(){
-	set -x
 	local target_session=0
 	local target_window=0
 	local target_pane=0
