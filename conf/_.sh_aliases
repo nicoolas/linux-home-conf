@@ -112,7 +112,10 @@ function tgo()
 		return 0
 	fi
 
-	if [ $(echo "$(tmux -V | cut -c 6-) > 1.9" | bc) -ne 1 ]
+	local tmux_version=$(tmux -V | cut -c 6-)
+	[ $tmux_version = "master" ] && tmux_version=99.9
+
+	if [ $(echo "$tmux_version > 1.9" | bc) -ne 1 ]
 	then
 		echo "Old tmux version ($(tmux -V)), use 'tgo-old'"
 		return 0
