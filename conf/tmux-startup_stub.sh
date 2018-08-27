@@ -10,14 +10,15 @@
 f_window() {
     WINDOW_NAME="$1"
 	shift 1
-	if [ "$WINDOW_ID" = "0" ]
+	if [ "$WINDOW_ID_NEXT" = "0" ]
 	then
 		tmux new-session -s $SESSION -d -n "$WINDOW_NAME" "$@"
 	else
-		tmux new-window -t $SESSION:$WINDOW_ID -n "$WINDOW_NAME" "$@"
+		tmux new-window -t $SESSION:$WINDOW_ID_NEXT -n "$WINDOW_NAME" "$@"
 	fi
     echo "--> $SESSION:$WINDOW_ID | $WINDOW_NAME"
-    WINDOW_ID=$((WINDOW_ID+1))
+	WINDOW_ID=$WINDOW_ID_NEXT
+    WINDOW_ID_NEXT=$((WINDOW_ID_NEXT+1))
 }
 
 f_session() {
@@ -35,6 +36,7 @@ f_session() {
 
 	SESSION="$1"
 	WINDOW_ID="0"
+	WINDOW_ID_NEXT="0"
 	echo
     echo ">>> $SESSION"
 }
