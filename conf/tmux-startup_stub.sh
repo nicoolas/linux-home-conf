@@ -16,7 +16,7 @@ f_window() {
 	else
 		tmux new-window -t $SESSION:$WINDOW_ID_NEXT -n "$WINDOW_NAME" "$@"
 	fi
-    echo "--> $SESSION:$WINDOW_ID | $WINDOW_NAME"
+    echo "--> $SESSION:$WINDOW_ID_NEXT | $WINDOW_NAME"
 	WINDOW_ID=$WINDOW_ID_NEXT
     WINDOW_ID_NEXT=$((WINDOW_ID_NEXT+1))
 }
