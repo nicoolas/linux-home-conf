@@ -10,9 +10,8 @@
 f_window() {
     WINDOW_NAME="$1"
 	shift 1
-	if [ "$WINDOW_ID" = "_" ]
+	if [ "$WINDOW_ID" = "0" ]
 	then
-	    WINDOW_ID=0
 		tmux new-session -s $SESSION -d -n "$WINDOW_NAME" "$@"
 	else
 		tmux new-window -t $SESSION:$WINDOW_ID -n "$WINDOW_NAME" "$@"
@@ -22,8 +21,20 @@ f_window() {
 }
 
 f_session() {
+    if ! tmux start-server
+    then
+        echo "ERROR: Failed to start Tmux server, aborting."
+        exit 1
+    fi
+
+    if tmux has-session -t "$session_name" 2>/dev/null
+    then
+        echo "ERROR: Session '$session_name' already exists"
+        return 1
+    fi
+
 	SESSION="$1"
-	WINDOW_ID="_"
+	WINDOW_ID="0"
 	echo
     echo ">>> $SESSION"
 }
@@ -36,17 +47,13 @@ f_send_keys() {
 	done
 }
 
+# = = = = = = = = = = = = = = = = = = =
+#f_session "my_session"
+#f_window "Window-A" -c ~/
+#f_window "Logs" -c /var/log/
+#f_send_keys "tail -f /var/log/syslog"
 
 #tmux split-window -t $SESSION:$WINDOW_ID -v -c ~/
 #tmux split-window -t $SESSION:$WINDOW_ID -h -c ~/
 #tmux select-window -t $SESSION:0
-
-
-# = = = = = = = = = = = = = = = = = = =
-#DEFAULT_SESSION=0
-#f_session $DEFAULT_SESSION
-#f_window "_-_" -c ~/
-
-
-#tmux select-window -t $DEFAULT_SESSION
 
