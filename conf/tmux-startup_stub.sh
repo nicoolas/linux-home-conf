@@ -22,21 +22,22 @@ f_window() {
 }
 
 f_session() {
+	SESSION="$1"
+	WINDOW_ID="0"
+	WINDOW_ID_NEXT="0"
+
     if ! tmux start-server
     then
         echo "ERROR: Failed to start Tmux server, aborting."
         exit 1
     fi
 
-    if tmux has-session -t "$session_name" 2>/dev/null
+    if tmux has-session -t "$SESSION" 2>/dev/null
     then
-        echo "ERROR: Session '$session_name' already exists"
+        echo "ERROR: Session '$SESSION' already exists"
         return 1
     fi
 
-	SESSION="$1"
-	WINDOW_ID="0"
-	WINDOW_ID_NEXT="0"
 	echo
     echo ">>> $SESSION"
 }
