@@ -30,27 +30,31 @@ _log
 sh_share="$HOME/.sh_share"
 for shrc in "$HOME/.bashrc" "$HOME/.zshrc"
 do
-	if grep -q "^[^#].*source $sh_share" $shrc
+	if [ -f "$shrc" ]
 	then
-		_log "DO NOT duplicate '$sh_share' sourcing in '$shrc'"
-	else
-		_log "Appending sources to file '$shrc'"
-		cat >> $shrc <<-EOS
-		[ -f $sh_share ] && source $sh_share
-		EOS
+		if grep -q "^[^#].*source $sh_share" $shrc
+		then
+			_log "DO NOT duplicate '$sh_share' sourcing in '$shrc'"
+		else
+			_log "Appending sources to file '$shrc'"
+			cat >> $shrc <<-EOS
+			[ -f $sh_share ] && source $sh_share
+			EOS
+		fi
+		if grep -q 'bash_aliases\|bash_share' $shrc
+		then
+			_log "File $shrc requires some manual cleaning"
+		fi
 	fi
 done
 
 
+# clean old naming
 for old_shrc in "$HOME/.bash_aliases" "$HOME/.bash_share"
 do
 	[ -L $old_shrc ] && rm  -v $old_shrc
 done
-
-# clean old naming
 [ -e $HOME/.bash_local ]  && mv -v $HOME/.bash_local $HOME/.sh_local
-sed -i '/~\/.bash_aliases/d' $HOME/.bashrc
-sed -i '/~\/.bash_share/d' $HOME/.bashrc
 
 _log
 
