@@ -24,7 +24,9 @@ set smarttab
 let mapleader = ","
 let g:mapleader = ","
 
-colorscheme koehler
+" koehler elflord ron desert
+colorscheme elflord
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Highlight spaces
