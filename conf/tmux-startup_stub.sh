@@ -50,16 +50,27 @@ f_session() {
     echo ">>> $SESSION$_socket_msg"
 }
 
+# Somehow, in scripts, the split-window command
+# does not change the current pane ID
+# We rememeber the PaneId and reuse it here with the '-t' option
+# -t -> uses env variable _TMUX_LATEST_ID for target pane
 f_send_keys() {
-	sleep 0.2
-	for k in "$@"
-	do
-		$TMUX_CMD send-keys "$k"
-	done
+    local target_pane_id=""
+    if [ "$1" = "-t" ]
+    then
+        [ -n "$_TMUX_LATEST_ID" ] && target_pane_id="-t$_TMUX_LATEST_ID"
+        shift
+    fi
+    sleep 0.1
+    for k in "$@"
+    do
+        $TMUX_CMD send-keys $target_pane_id "$k"
+    done
 }
 
 f_split_window() {
-	$TMUX_CMD split-window -t $SESSION:$WINDOW_ID "$@"
+    _TMUX_LATEST_ID=$($TMUX_CMD split-window -P -t $SESSION:$WINDOW_ID "$@")
+    export _TMUX_LATEST_ID
 }
 
 # = = = = = = = = = = = = = = = = = = =
