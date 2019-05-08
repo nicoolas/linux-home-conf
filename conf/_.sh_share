@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Install oh-my-zsh
+# sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
 export EDITOR=vim
 
 if grep -zq '^[-]*zsh$' /proc/$$/cmdline

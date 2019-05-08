@@ -154,6 +154,19 @@ function tgos0(){
 	tmux attach-session -t $target_session
 }
 
+# TODO: fix completion
+function _tssh() {
+	win_name="$(echo $1 | cut -d '_' -f1)"
+	tmux rename-window $win_name
+	ssh "$@"
+}
+
+function vix() {
+	touch "$1" || return 1
+	chmod +x "$1" || return 1
+	vi "$1"
+}
+
 # some more ls aliases
 alias ls='ls --color=auto'
 alias ll='ls -hl'
