@@ -167,6 +167,13 @@ function vix() {
 	vi "$1"
 }
 
+function until-do() {
+	until timeout 30 "$@"
+	do sleep 1
+	done
+	notify-send -t 0 -u critical "Job Done"
+}
+
 # some more ls aliases
 alias ls='ls --color=auto'
 alias ll='ls -hl'
