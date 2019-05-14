@@ -1,0 +1,6 @@
+#!/bin/sh
+
+
+tmux rename-window "$(echo $1 | cut -d '_' -f1)"
+ssh "$@"
+
