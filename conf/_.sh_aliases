@@ -167,6 +167,24 @@ function vix() {
 	vi "$1"
 }
 
+function until-do() {
+	local _to_sec=30
+	local _count=1
+	if [ "$1" = '-t' ]
+	then
+		local _to_sec=$2
+		shift 2
+	fi
+	while true
+	do
+		printf '%s|#%*i - %s\n' "$0" 3 "$_count" "$(date +'%Y-%m-%d %H:%M:%S')"
+		timeout $_to_sec "$@" && break
+		_count=$((_count+1))
+		sleep 1
+	done
+	notify-send -t 0 -u critical "Job Done: $(date)" "Count: $_count" 
+}
+
 # some more ls aliases
 alias ls='ls --color=auto'
 alias ll='ls -hl'
