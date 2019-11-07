@@ -182,7 +182,10 @@ function until-do() {
 		_count=$((_count+1))
 		sleep 1
 	done
-	notify-send -t 0 -u critical "Job Done: $(date)" "Count: $_count" 
+	if which notify-send >/dev/null 2>&1
+	then
+		notify-send -t 0 -u critical "Job Done: $(date)" "Count: $_count" 
+	fi
 }
 
 # some more ls aliases

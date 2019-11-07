@@ -17,6 +17,10 @@ set ignorecase
 set smartcase
 set smarttab
 
+
+" To disable missing eof new line
+" set nofixendofline
+
 " for tmux
 "set mouse=a
 "set ttymouse=xterm
