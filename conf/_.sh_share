@@ -5,7 +5,7 @@
 
 export EDITOR=vim
 
-if grep -zq '^[-]*zsh$' /proc/$$/cmdline
+if grep -zq '^[-]*[usrbin/]*zsh$' /proc/$$/cmdline
 then
 	echo >/dev/null
 	setopt nosharehistory # Do not import history from other shells dynamically

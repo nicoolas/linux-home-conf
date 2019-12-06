@@ -1,8 +1,11 @@
 "set viminfo=!,'25,\"100,:20,%,n~/.viminfo
 
 syntax on
+set tabstop=4
+set expandtab
 set shiftwidth=4
 set ts=4
+
 let c_space_errors=1
 set hlsearch
 map <F1> :tabnew
@@ -14,6 +17,10 @@ set incsearch           " do incremental searching
 set ignorecase
 set smartcase
 set smarttab
+
+
+" To disable missing eof new line
+" set nofixendofline
 
 " for tmux
 "set mouse=a
