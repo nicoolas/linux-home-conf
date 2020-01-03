@@ -4,8 +4,15 @@
 # sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 export EDITOR=vim
+no_color="\[\033[0m\]"
+ps1_color="\[\033[1;34m\]"
 
-if grep -zq '^[-]*[usrbin/]*zsh$' /proc/$$/cmdline
+if ischroot
+then
+    echo "==IS CHROOT=="
+	export PS1="\${PWD}$ps1_color :$no_color "
+	PS2='>> '
+elif grep -zq '^[-]*[usrbin/]*zsh$' /proc/$$/cmdline
 then
 	echo >/dev/null
 	setopt nosharehistory # Do not import history from other shells dynamically
@@ -19,19 +26,8 @@ then
 		export PS2="%_> "
 	fi
 else
-	no_color="\[\033[0m\]"
-
-	if [ $(whoami) = root ]; then
-		ps1_color="\[\033[1;31m\]"
-	else
-		ps1_color="\[\033[1;34m\]"
-	fi
+	[ $(whoami) = root ] && ps1_color="\[\033[1;31m\]"
 	export PS1="$ps1_color[$no_color\u$ps1_color]$no_color "
-	
-	if ! ls -id / | grep -q "^2 /"
-	then
-		export PS1="$ps1_color(chroot)$no_color "
-	fi
 	export PS1=$PS1"\${PWD}$ps1_color :$no_color "
 	
 	PS2='>> '
