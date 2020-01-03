@@ -113,8 +113,12 @@ function tgo()
 		return 0
 	fi
 
+    which bc >/dev/null 2>&1 || { echo "Please install 'bc'"; return 1; }
+    tmux -V >/dev/null || { echo "Tmux error, please investigate."; return 1; }
 	local tmux_version=$(tmux -V | cut -c 6-)
+
 	echo "Tmux version: '$tmux_version'"
+	[ "$tmux_version" = "" ] && tmux_version=0
 	[ "$tmux_version" = "master" ] && tmux_version=99.9
 	[ "${tmux_version%%[-\.0-9]*}" = "next" ] && tmux_version=99.9
 
