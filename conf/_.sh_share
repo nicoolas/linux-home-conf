@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/false
 
 # Install oh-my-zsh
 # sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -10,9 +10,11 @@ ps1_color="\[\033[1;34m\]"
 if ischroot
 then
     echo "==IS CHROOT=="
-	export PS1="\${PWD}$ps1_color :$no_color "
-	PS2='>> '
-elif grep -zq '^[-]*[usrbin/]*zsh$' /proc/$$/cmdline
+    etc_chroot="/etc/debian_chroot"
+    export PS1_prefix="(chroot)"
+    [ -s $etc_chroot ] && PS1_prefix="($(head -n 1 $etc_chroot | tr -d '\n'))"
+fi
+if grep -zq '^[-]*[usrbin/]*zsh$' /proc/$$/cmdline
 then
 	echo >/dev/null
 	setopt nosharehistory # Do not import history from other shells dynamically
@@ -22,12 +24,12 @@ then
 	then
 		#export PS1="%m%# "
 		#export PS1="[%n@%m] %0~ %# "
-		export PS1='%(!.%F{red}.%F{cyan})%n%f@%F{yellow}%12>.>%m%>>%(!.%F{red}.%F{cyan}) %0~%f %# '
+		export PS1="${PS1_prefix}%(!.%F{red}.%F{cyan})%n%f@%F{yellow}%12>.>%m%>>%(!.%F{red}.%F{cyan}) %0~%f %# "
 		export PS2="%_> "
 	fi
 else
 	[ $(whoami) = root ] && ps1_color="\[\033[1;31m\]"
-	export PS1="$ps1_color[$no_color\u$ps1_color]$no_color "
+	export PS1="${PS1_prefix}$ps1_color[$no_color\u$ps1_color]$no_color "
 	export PS1=$PS1"\${PWD}$ps1_color :$no_color "
 	
 	PS2='>> '
