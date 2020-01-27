@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/false
 
 alias grep='grep --color=auto'
 
@@ -167,10 +167,20 @@ function _tssh() {
 }
 
 function vix() {
+    local shebang="false"
+    if [ "$1" = "shebang" ]
+    then
+        shift
+        shebang=true
+        [ -s "$1" ] && shebang=false
+    fi
+    [ "$shebang" = "true" ] && echo '#!/bin/sh\n' > "$1"
 	touch "$1" || return 1
 	chmod +x "$1" || return 1
 	vi "$1"
 }
+
+alias vix-script='vix "shebang"'
 
 function until-do() {
 	local _to_sec=30
