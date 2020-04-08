@@ -38,3 +38,13 @@ fi
 [ -r  ~/.sh_aliases ] && source ~/.sh_aliases
 [ -r  ~/.sh_local ] && source ~/.sh_local
 
+switch_to_gitlab=$(realpath $(dirname $(realpath $0))/../switch-to-gitlab.sh)
+if test -x $switch_to_gitlab
+then
+    echo
+    echo "<<< <<<"
+    echo "please switch to GitLab repo:"
+    echo "$switch_to_gitlab"
+    echo ">>> >>>"
+    echo
+fi
