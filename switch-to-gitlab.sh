@@ -1,6 +1,6 @@
 #!/bin/sh
 
-dir=$(realpath $(dirname $(realpath $0))
+dir=$(realpath $(dirname $(realpath $0)))
 echo "Change Dir to $dir"
 cd $dir || exit 1
 
