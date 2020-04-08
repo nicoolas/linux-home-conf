@@ -1,5 +1,9 @@
 #!/bin/sh
 
+dir=$(realpath $(dirname $(realpath $0))
+echo "Change Dir to $dir"
+cd $dir || exit 1
+
 echo "Current remotes"
 git remote -v
 
