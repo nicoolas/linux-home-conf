@@ -38,13 +38,13 @@ fi
 [ -r  ~/.sh_aliases ] && source ~/.sh_aliases
 [ -r  ~/.sh_local ] && source ~/.sh_local
 
-switch_to_gitlab=$(realpath $(dirname $(realpath ~/.sh_share))/../switch-to-gitlab.sh)
-if git remote -v | grep -q github.com
+_git_dir=$(realpath $(dirname $(realpath ~/.sh_share))/../) 
+if (cd $_git_dir ; git remote -v | grep -q github.com)
 then
     echo
     echo "<<< <<<"
     echo "please switch to GitLab repo:"
-    echo "$switch_to_gitlab"
+    echo "$_git_dir/switch-to-gitlab.sh"
     echo ">>> >>>"
     echo
 fi
